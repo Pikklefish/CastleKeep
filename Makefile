@@ -1,1 +1,0 @@
-# Automates build and test
