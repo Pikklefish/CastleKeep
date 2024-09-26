@@ -1,5 +1,12 @@
 # Castle: secure banking transaction
-built using C++
+created by Peter Song
+
+## Introduction
+The purpose of this project is to demonstrate my skills on C++, Secuirty (OpenSSL), SOLID, and Testing (Google Test) by creating a simple backend for what could be a bank (Castle Bank). With this project you can add accounts, and transact money between accounts (deposite, withdraw). The project also aims to upload basic security like an actual bank through password hashing and encrypting transaction data with OpenSSL.
+
+
+Here is a basic flowchart of what the different classes do
+![flowchart](images/CastleFlowChart.png)
 
 ## Compiler Set up/Compile
 Set up Complier following this doc: [doc](https://code.visualstudio.com/docs/languages/cpp)
