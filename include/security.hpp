@@ -1,5 +1,5 @@
-#ifndef SECURITY_H
-#define SECURITY_H
+#ifndef SECURITY_HPP
+#define SECURITY_HPP
 
 #include <string>
 

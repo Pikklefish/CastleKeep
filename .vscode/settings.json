@@ -54,7 +54,9 @@
         "cstring": "cpp",
         "cinttypes": "cpp",
         "iomanip": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "fstream": "cpp"
     },
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe"
 }

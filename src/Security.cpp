@@ -1,4 +1,5 @@
-#include "security.h"
+#include "security.hpp"
+
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <openssl/err.h>
