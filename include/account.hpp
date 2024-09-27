@@ -7,20 +7,19 @@ class Account
 {
 
 private:
-    int accountID;
-    std::string accountHolderName;
+    int account_id;
+    std::string account_holder_name;
     double balance;
-    std::string passwordHash;
+    std::string password_hash;
 
 public:
-    Account(std::string name, double initBalance, std::string hash); // constructor
+    Account(std::string name, double init_balance, std::string hash); // constructor
 
     // methods
-    double getBalance() const; // const ensures nothing is changed
-    void deposit(double amount);
-    void withdraw(double amount);
-    void createAccount(std::string name, std::string password);
-    bool authenticatePassword(const std::string& password) const;
+    double GetBalance() const; // const ensures nothing is changed
+    void Deposit(double amount);
+    void Withdraw(double amount);
+    bool AuthenticatePassword(const std::string& password) const;
 };
 
 #endif

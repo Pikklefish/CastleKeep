@@ -3,35 +3,41 @@
 #include "account.hpp"
 #include "security.hpp"
 
+// Test fixture for account related tests
+class AccountTestFixture : public testing::Test
+{
+protected:
+    std::string password;
+    Account account;
 
-// Test case for account creation and initial balance
-//this is one test
-TEST(AccountTest_1, InitialBalanceTest) {   // ASSERT (abort when failed)  EXPECT (Cont. even if failed)
-    std::string password = "securepassword123!";
-    Account account_1("Peter Song", 100.00, Security::hashPassword(password));
-    EXPECT_EQ(account_1.getBalance(), 100.00) << "Initial balance expected 100.00"; //extra information displayed when test failed
+    AccountTestFixture()
+        : password("securepassword123!"),
+          account("Peter Song", 100.00, Security::HashPassword(password)){}
+};
+
+// Test case for initial balance check functionality
+TEST_F(AccountTestFixture, Initial_Balance_Test)
+{
+    EXPECT_EQ(account.GetBalance(), 100.00) << "Initial balance expected 100.00"; // extra information displayed when test failed
 }
 
 // Test case for deposit functionality
-TEST(AccountTest_2, DepositTest) {
-    std::string password = "securepassword123!";
-    Account account_2("Peter Song", 100.00, Security::hashPassword(password));
-    account_2.deposit(23.01);
-    EXPECT_EQ(account_2.getBalance(), 123.01) << "Balance after deposit expected 123.01";
+TEST_F(AccountTestFixture, Deposit_Test)
+{
+    account.Deposit(23.01);
+    EXPECT_EQ(account.GetBalance(), 123.01) << "Balance after deposit expected 123.01";
 }
 
 // Test case for withdraw functionality
-TEST(AccountTest_3, WithdrawTest) {
-    std::string password = "securepassword123!";
-    Account account_3("Peter Song", 100.00, Security::hashPassword(password));
-    account_3.withdraw(51.02);
-    EXPECT_DOUBLE_EQ(account_3.getBalance(), 48.98) << "Balance after withdrawal expected 48.98";
+TEST_F(AccountTestFixture, Withdraw_Test)
+{
+    account.Withdraw(51.02);
+    EXPECT_DOUBLE_EQ(account.GetBalance(), 48.98) << "Balance after withdrawal expected 48.98";
 }
 
 // Test case for password authentication
-TEST(SecurityTest, AuthenticatePasswordTest) {
-    std::string password = "securepassword123!";
-    Account account_1("Peter Song", 100.00, Security::hashPassword(password));
-    EXPECT_TRUE(account_1.authenticatePassword(password)) << "Password authentication should pass for correct password";
-    EXPECT_FALSE(account_1.authenticatePassword("wrongpassword")) << "Password authentication should fail for incorrect password";
+TEST_F(AccountTestFixture, Authenticate_Password_Test)
+{
+    EXPECT_TRUE(account.AuthenticatePassword(password)) << "Password authentication should pass for correct password";
+    EXPECT_FALSE(account.AuthenticatePassword("wrongpassword")) << "Password authentication should fail for incorrect password";
 }

@@ -6,14 +6,14 @@
 class Security
 {
 private:
-    static std::string encryptionKey;
+    static std::string encryption_key;
 
 public:
-    static std::string hashPassword(const std::string &password);
+    static std::string HashPassword(const std::string &password);
     // using AES
-    static std::string encrypt(const std::string &data);
+    static std::string Encrypt(const std::string &data);
 
-    static std::string decrypt(const std::string &encryptedData);
+    static std::string Decrypt(const std::string &encrypted_data);
 };
 
 #endif

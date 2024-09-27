@@ -13,35 +13,35 @@
 #include <iomanip>
 using namespace std;
 
-string Security::encryptionKey = "my_secure_123456";
+string Security::encryption_key = "my_secure_123456";
 
-void handleOpenSSLError(void)
+void HandleOpenSSLError(void)
 {
     ERR_print_errors_fp(stderr);
     abort();
 }
 
-string Security::encrypt(const string &data){
+string Security::Encrypt(const string &data){
 
     unsigned char key[16];
-    memcpy(key, Security::encryptionKey.data(), 16);
+    memcpy(key, Security::encryption_key.data(), 16);
 
     // randomly generate initialization vector AES-CBC
     unsigned char iv[16];
     if (!RAND_bytes(iv, sizeof(iv)))
     {
-        handleOpenSSLError();
+        HandleOpenSSLError();
     }
 
     // Create the encryption context
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
     if (!ctx)
-        handleOpenSSLError();
+        HandleOpenSSLError();
 
     // Init the encryption for AES128CBC
     if (1 != EVP_EncryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, key, iv))
     {
-        handleOpenSSLError();
+        HandleOpenSSLError();
     }
 
     // providing the data to be encrypted
@@ -49,7 +49,7 @@ string Security::encrypt(const string &data){
     int len;
     if (1 != EVP_EncryptUpdate(ctx, ciphertext, &len, (unsigned char *)data.c_str(), data.length()))
     {
-        handleOpenSSLError();
+        HandleOpenSSLError();
     }
 
     int ciphertext_len = len;
@@ -57,7 +57,7 @@ string Security::encrypt(const string &data){
     // finalize the encryption
     if (1 != EVP_EncryptFinal_ex(ctx, ciphertext + len, &len))
     {
-        handleOpenSSLError();
+        HandleOpenSSLError();
     }
 
     ciphertext_len += len;
@@ -69,14 +69,14 @@ string Security::encrypt(const string &data){
     return string((char *)iv, 16) + string((char *)ciphertext, ciphertext_len);
 }
 
-string Security::decrypt(const string &encryptedData){
+string Security::Decrypt(const string &encrypted_data){
     // Extract the IV (first 16 bytes) and the ciphertext
     unsigned char iv[16];
-    memcpy(iv, encryptedData.data(), 16);
-    string ciphertext = encryptedData.substr(16);
+    memcpy(iv, encrypted_data.data(), 16);
+    string ciphertext = encrypted_data.substr(16);
 
     unsigned char key[16];
-    memcpy(key, Security::encryptionKey.data(), 16);
+    memcpy(key, Security::encryption_key.data(), 16);
 
     unsigned char plaintext[128];
     int len;
@@ -84,25 +84,25 @@ string Security::decrypt(const string &encryptedData){
     // Create the decryption context
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
     if (!ctx)
-        handleOpenSSLError();
+        HandleOpenSSLError();
 
     // Initialize the decryption operation for AES-128-CBC
     if (1 != EVP_DecryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, key, iv))
     {
-        handleOpenSSLError();
+        HandleOpenSSLError();
     }
 
     // Provide the data to be decrypted
     if (1 != EVP_DecryptUpdate(ctx, plaintext, &len, (unsigned char *)ciphertext.c_str(), ciphertext.length()))
     {
-        handleOpenSSLError();
+        HandleOpenSSLError();
     }
     int plaintext_len = len;
 
     // Finalize the decryption
     if (1 != EVP_DecryptFinal_ex(ctx, plaintext + len, &len))
     {
-        handleOpenSSLError();
+        HandleOpenSSLError();
     }
     plaintext_len += len;
 
@@ -114,7 +114,7 @@ string Security::decrypt(const string &encryptedData){
 }
 
 // Convert unsigned char array to a hex string
-string toHexString(const unsigned char *hash, size_t length){
+string ToHexString(const unsigned char *hash, size_t length){
     stringstream ss;
     for (size_t i = 0; i < length; ++i)
     {
@@ -124,10 +124,10 @@ string toHexString(const unsigned char *hash, size_t length){
 }
 
 // Hash the password using SHA-256
-string Security::hashPassword(const string &password){
+string Security::HashPassword(const string &password){
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256((unsigned char *)password.c_str(), password.length(), hash);
 
     // Convert the hash to a readable hex string and return it
-    return toHexString(hash, SHA256_DIGEST_LENGTH);
+    return ToHexString(hash, SHA256_DIGEST_LENGTH);
 }

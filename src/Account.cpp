@@ -5,7 +5,7 @@ using namespace std;
 #include "account.hpp"
 #include "security.hpp"
 
-int generateUUID()
+int GenerateUUID()
 {
     random_device rd;                                   // Non-deterministic random number generator
     mt19937 gen(rd());                                  // Seed the generator with a random device
@@ -13,27 +13,27 @@ int generateUUID()
     return distr(gen); 
 }
 
-Account::Account(string name, double initBalance, string hash)
-    : accountID(generateUUID()),
-      accountHolderName(name),
-      balance(initBalance),
-      passwordHash(hash){
-    cout << "Account successfully created, ID: " << accountID << endl;
+Account::Account(string name, double init_balance, string hash)
+    : account_id(GenerateUUID()),
+      account_holder_name(name),
+      balance(init_balance),
+      password_hash(hash){
+    cout << "Account successfully created, ID: " << account_id << endl;
 }
 
-bool Account::authenticatePassword(const string& password) const{
-    string hashedPassword = Security::hashPassword(password);
-    return hashedPassword == passwordHash;
+bool Account::AuthenticatePassword(const string& password) const{
+    string hashed_password = Security::HashPassword(password);
+    return hashed_password == password_hash;
 }
 
-double Account::getBalance() const{
+double Account::GetBalance() const{
     return balance; 
 }
 
-void Account::deposit(double amount){
+void Account::Deposit(double amount){
     balance += amount;
 }
 
-void Account::withdraw(double amount){
+void Account::Withdraw(double amount){
     balance -=amount;
 }

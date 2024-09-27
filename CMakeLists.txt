@@ -1,34 +1,3 @@
-# cmake_minimum_required(VERSION 3.25.0)
-
-# set(This Castle)
-
-# project(${This} C CXX)
-# set(CMAKE_C_STANDARD 99)
-# set(CMAKE_CXX_STANDARD 23)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-# enable_Testing()
-
-# add_subdirectory(googletest)
-
-# include_directories(${CMAKE_SOURCE_DIR}/include)
-
-# set(Headers
-#     include/account.hpp
-#     include/security.hpp
-# )
-
-# set(Sources
-#     src/account.cpp
-#     src/security.cpp
-# )
-
-# add_library(${This} STATIC ${Sources} ${Headers})
-
-# add_subdirectory(tests)
-
-
 cmake_minimum_required(VERSION 3.25.0)
 
 set(This Castle)

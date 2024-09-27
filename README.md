@@ -1,5 +1,5 @@
 # Castle: secure banking transaction
-created by Peter Song
+created by Seung Whan Song
 
 ## Introduction
 The purpose of this project is to demonstrate my skills on C++, Secuirty (OpenSSL), SOLID, and Testing (Google Test) by creating a simple backend for what could be a bank (Castle Bank). With this project you can add accounts, and transact money between accounts (deposite, withdraw). The project also aims to upload basic security like an actual bank through password hashing and encrypting transaction data with OpenSSL.
@@ -50,6 +50,7 @@ To run test go to command palette again -> CMake:Run Test (next time you can jus
 ## Resources
 - [CMAKE resource](https://www.youtube.com/watch?v=4U-lnfxY2U0&ab_channel=LearnQtGuide)
 - [Google Test Resource](https://www.youtube.com/watch?v=Lp1ifh9TuFI&ab_channel=Rhymu%27sVideos)
+- [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html#C++_Version)
 
 
 ## Short Cuts
