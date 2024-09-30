@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <random>
 using namespace std;
 
@@ -27,19 +28,22 @@ bool Transaction::ValidateTransaction(Account &sender, Account &receiver, double
 
 void Transaction::ProcessTransaction(Account &sender, Account &receiver, double amount)
 {
+    int transaction_id = GenerateTransactionID();
+    timestamp = std::chrono::system_clock::now();
+
     if (ValidateTransaction(sender, receiver, amount))
     {
         sender.Withdraw(amount);
         receiver.Deposit(amount);
-
-        timestamp = std::chrono::system_clock::now();
-        int transaction_id = GenerateTransactionID();
-
-        LogTransaction(transaction_id, sender.GetAccountID(), receiver.GetAccountID(), amount, timestamp);
+        string status = "success";
+        
+        LogTransaction(transaction_id, status, sender.GetAccountID(), receiver.GetAccountID(), amount, timestamp);
         std::cout << "Transaction Complete of amount: " << amount << std::endl;
     }
     else
     {
+        string status = "fail";
+        LogTransaction(transaction_id, status, sender.GetAccountID(), receiver.GetAccountID(), amount, timestamp);
         std::cerr << "Transaction processing failed." << std::endl;
     }
 }
@@ -47,7 +51,7 @@ void Transaction::ProcessTransaction(Account &sender, Account &receiver, double 
 #include <iomanip>
 #include <sstream>
 
-void Transaction::LogTransaction(int transaction_id, int sender_account_id, int receiver_account_id, double amount, const std::chrono::system_clock::time_point &timestamp)
+void Transaction::LogTransaction(int transaction_id, string status, int sender_account_id, int receiver_account_id, double amount, const std::chrono::system_clock::time_point &timestamp)
 {
     // Convert time_point to a readable string
     std::time_t log_time = std::chrono::system_clock::to_time_t(timestamp);
@@ -55,7 +59,7 @@ void Transaction::LogTransaction(int transaction_id, int sender_account_id, int 
     time_stream << std::put_time(std::localtime(&log_time), "%Y-%m-%d %H:%M:%S");
 
     // Prepare transaction details as a single string for encryption
-    std::string transaction_data = "Transaction ID: " + std::to_string(transaction_id) +
+    std::string transaction_data = "Status: " + status +
                                    "\nSender Account ID: " + std::to_string(sender_account_id) +
                                    "\nReceiver Account ID: " + std::to_string(receiver_account_id) +
                                    "\nAmount: " + std::to_string(amount) +

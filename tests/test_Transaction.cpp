@@ -21,7 +21,6 @@ TEST(TransactionTest, ValidateTransactionFail) {
     Account receiver("Jane Doe", 1000.0, "hashed_password");
     Transaction transaction;
 
-    
     ASSERT_FALSE(transaction.ValidateTransaction(sender, receiver, 2000.0));
 }
 
@@ -57,13 +56,8 @@ TEST(TransactionTest, ProcessTransactionFail) {
 TEST(TransactionTest, LogTransactionTest) {
     Account sender("John Doe", 5000.0, "hashed_password");
     Account receiver("Jane Doe", 1000.0, "hashed_password");
-    Transaction transaction;
-
-    
+    Transaction transaction;    
     transaction.ProcessTransaction(sender, receiver, 1000.0);
 
-    // Check the log (if you're logging to a file, you could check if the file is updated)
-    // This test would depend on how you mock or validate the logging mechanism
-    // For simplicity, we assume the log function works correctly.
     SUCCEED();
 }
