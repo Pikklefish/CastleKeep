@@ -9,7 +9,7 @@ int GenerateUUID()
 {
     random_device rd;                                   // Non-deterministic random number generator
     mt19937 gen(rd());                                  // Seed the generator with a random device
-    uniform_int_distribution<> distr(1000000, 9999999); // Range for random ID (7-digit number)
+    uniform_int_distribution<> distr(100000000, 999999999); // Range for random ID (9-digit number)
     return distr(gen); 
 }
 
@@ -36,4 +36,8 @@ void Account::Deposit(double amount){
 
 void Account::Withdraw(double amount){
     balance -=amount;
+}
+
+int Account::GetAccountID() const{   //Getter
+    return account_id;
 }

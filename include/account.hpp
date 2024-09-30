@@ -20,6 +20,7 @@ public:
     void Deposit(double amount);
     void Withdraw(double amount);
     bool AuthenticatePassword(const std::string& password) const;
+    int GetAccountID() const;
 };
 
 #endif
