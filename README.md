@@ -64,7 +64,9 @@ CREATE TABLE accounts ( uuid INT PRIMARY KEY, name VARCHAR(100), balance INT, pa
 );
 ```
 
-verify table creation using `SELECT * FROM accounts`
+verify table creation using `SELECT * FROM accounts`'
+
+Download the C++ connector [link](https://dev.mysql.com/downloads/connector/cpp/)
 
 
 
