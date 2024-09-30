@@ -47,6 +47,27 @@ in the command palette (ctrl + shift + p) -> Reload Window -> inm the command pa
 
 To run test go to command palette again -> CMake:Run Test (next time you can just click the "Run CTest" button at the bottom of the terminal)
 
+## Data Base
+Download [MySQL](https://dev.mysql.com/downloads/installer/), [PopSQL](https://popsql.com/download)
+
+Create a new database `CREATE DATABASE database_name;`
+
+Verify db creation `SHOW DATABASES;`
+
+Access db using `USE database_name`;
+
+Open PopSQL and go to 'Manage Connections' -> 'New Connection'-> fill in the necessary information -> 'connect' 
+
+Create table for account storage
+```
+CREATE TABLE accounts ( uuid INT PRIMARY KEY, name VARCHAR(100), balance INT, password VARCHAR(64)
+);
+```
+
+verify table creation using `SELECT * FROM accounts`
+
+
+
 ## Resources
 - [CMAKE resource](https://www.youtube.com/watch?v=4U-lnfxY2U0&ab_channel=LearnQtGuide)
 - [Google Test Resource](https://www.youtube.com/watch?v=Lp1ifh9TuFI&ab_channel=Rhymu%27sVideos)
