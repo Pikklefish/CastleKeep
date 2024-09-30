@@ -27,11 +27,15 @@ include_directories(${OPENSSL_INCLUDE_DIR})
 set(Headers
     include/account.hpp
     include/security.hpp
+    include/transaction.hpp
+    include/auditLog.hpp
 )
 
 set(Sources
     src/account.cpp
     src/security.cpp
+    src/transaction.cpp
+    src/auditLog.cpp
 )
 
 # Create a static library

@@ -9,7 +9,7 @@ const std::string AuditLog::log_file_path = "C:/Users/work/Castle/logs/transacti
 
 void AuditLog::Log(int transaction_id, const std::string &encrypted_data)
 {
-    std::ofstream log_file("transaction_log.txt", std::ios_base::app); // Open the log file in append mode
+    std::ofstream log_file(log_file_path, std::ios_base::app); // Open the log file in append mode
 
     if (log_file.is_open())
     {

@@ -7,7 +7,7 @@ using namespace std;
 #include "auditLog.hpp"
 #include "security.hpp"
 
-int GenerateUUID()
+int GenerateTransactionID()
 {
     random_device rd;                                   // Non-deterministic random number generator
     mt19937 gen(rd());                                  // Seed the generator with a random device
@@ -33,7 +33,7 @@ void Transaction::ProcessTransaction(Account &sender, Account &receiver, double 
         receiver.Deposit(amount);
 
         timestamp = std::chrono::system_clock::now();
-        int transaction_id = GenerateUUID();
+        int transaction_id = GenerateTransactionID();
 
         LogTransaction(transaction_id, sender.GetAccountID(), receiver.GetAccountID(), amount, timestamp);
         std::cout << "Transaction Complete of amount: " << amount << std::endl;
