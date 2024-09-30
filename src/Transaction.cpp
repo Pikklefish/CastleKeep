@@ -5,6 +5,7 @@ using namespace std;
 #include "transaction.hpp"
 #include "account.hpp"
 #include "auditLog.hpp"
+#include "security.hpp"
 
 int GenerateUUID()
 {
@@ -46,13 +47,24 @@ void Transaction::ProcessTransaction(Account &sender, Account &receiver, double 
 #include <iomanip>
 #include <sstream>
 
-void Transaction::LogTransaction(int transaction_id, int sender_account_id, int receiver_account_id, double amount, const std::chrono::system_clock::time_point &timestamp) {
+void Transaction::LogTransaction(int transaction_id, int sender_account_id, int receiver_account_id, double amount, const std::chrono::system_clock::time_point &timestamp)
+{
     // Convert time_point to a readable string
     std::time_t log_time = std::chrono::system_clock::to_time_t(timestamp);
     std::stringstream time_stream;
     time_stream << std::put_time(std::localtime(&log_time), "%Y-%m-%d %H:%M:%S");
 
-    // Log transaction details (Assuming AuditLog has a method like Log)
-    AuditLog::Log(transaction_id, sender_account_id, receiver_account_id, amount, time_stream.str());
-    std::cout << "Transaction logged successfully!" << std::endl;
+    // Prepare transaction details as a single string for encryption
+    std::string transaction_data = "Transaction ID: " + std::to_string(transaction_id) +
+                                   "\nSender Account ID: " + std::to_string(sender_account_id) +
+                                   "\nReceiver Account ID: " + std::to_string(receiver_account_id) +
+                                   "\nAmount: " + std::to_string(amount) +
+                                   "\nTimestamp: " + time_stream.str();
+
+    // Encrypt the transaction data
+    std::string encrypted_data = Security::Encrypt(transaction_data);
+
+    // Log the encrypted transaction details
+    AuditLog::Log(transaction_id, encrypted_data);
+    std::cout << "Transaction logged successfully (encrypted)!" << std::endl;
 }

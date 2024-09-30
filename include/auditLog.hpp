@@ -5,18 +5,13 @@
 #include <chrono>
 #include <fstream>
 
-class AuditLog{
-
-    public:
-    static void Log(int transaction_id, int sender_id, int receiver_id, double amount, const std::string& timestamp);
-
-    private:
-        static const std::string log_file_path;
-
-        static std::string FormatTimestamp(const std::chrono::system_clock::time_point& timestamp);
-
+class AuditLog
+{
+private:
+    static const std::string log_file_path;
+public:
+    static void Log(int transaction_id, const std::string &encrypted_data);
 
 };
-
 
 #endif
