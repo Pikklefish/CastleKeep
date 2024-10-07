@@ -1,11 +1,13 @@
 #include <iostream>
 #include <string>
 #include <random>
+#include <iomanip>
+#include <sstream>
 using namespace std;
 
 #include "transaction.hpp"
 #include "account.hpp"
-#include "auditLog.hpp"
+#include "database.hpp"
 #include "security.hpp"
 
 int GenerateTransactionID()
@@ -15,6 +17,10 @@ int GenerateTransactionID()
     uniform_int_distribution<> distr(1000000, 9999999); // Range for random ID (7-digit number)
     return distr(gen);
 }
+
+// Constructor: Accepts a Database instance
+Transaction::Transaction(Database& db) : db(db) {}
+
 
 bool Transaction::ValidateTransaction(Account &sender, Account &receiver, double amount)
 {
@@ -48,8 +54,6 @@ void Transaction::ProcessTransaction(Account &sender, Account &receiver, double 
     }
 }
 
-#include <iomanip>
-#include <sstream>
 
 void Transaction::LogTransaction(int transaction_id, string status, int sender_account_id, int receiver_account_id, double amount, const std::chrono::system_clock::time_point &timestamp)
 {
@@ -59,16 +63,20 @@ void Transaction::LogTransaction(int transaction_id, string status, int sender_a
     time_stream << std::put_time(std::localtime(&log_time), "%Y-%m-%d %H:%M:%S");
 
     // Prepare transaction details as a single string for encryption
-    std::string transaction_data = "Status: " + status +
-                                   "\nSender Account ID: " + std::to_string(sender_account_id) +
-                                   "\nReceiver Account ID: " + std::to_string(receiver_account_id) +
-                                   "\nAmount: " + std::to_string(amount) +
-                                   "\nTimestamp: " + time_stream.str();
+    std::string transaction_status = status;
+    std::string transaction_sender = std::to_string(sender_account_id);
+    std::string transaction_receiver = std::to_string(receiver_account_id);
+    std::string transaction_amount = std::to_string(amount);
+    std::string transaction_time = time_stream.str();
 
     // Encrypt the transaction data
-    std::string encrypted_data = Security::Encrypt(transaction_data);
-
+    std::string encrypted_transaction_status = Security::Encrypt(transaction_status);
+    std::string encrypted_transaction_sender = Security::Encrypt(transaction_sender);
+    std::string encrypted_transaction_receiver = Security::Encrypt(transaction_receiver);
+    std::string encrypted_transaction_amount = Security::Encrypt(transaction_amount);
+    std::string encrypted_transaction_time = Security::Encrypt(transaction_time);
+    
     // Log the encrypted transaction details
-    AuditLog::Log(transaction_id, encrypted_data);
+    db.SaveTransaction(transaction_id,encrypted_transaction_status, encrypted_transaction_sender, encrypted_transaction_receiver, encrypted_transaction_amount, encrypted_transaction_time);
     std::cout << "Transaction logged successfully (encrypted)!" << std::endl;
 }

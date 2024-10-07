@@ -48,26 +48,31 @@ in the command palette (ctrl + shift + p) -> Reload Window -> inm the command pa
 To run test go to command palette again -> CMake:Run Test (next time you can just click the "Run CTest" button at the bottom of the terminal)
 
 ## Data Base
-Download [MySQL](https://dev.mysql.com/downloads/installer/), [PopSQL](https://popsql.com/download)
+Download [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads), [PopSQL](https://popsql.com/download)
 
-Create a new database `CREATE DATABASE database_name;`
+make sure to download `pgadmin` during installation.
 
-Verify db creation `SHOW DATABASES;`
+PostgreSQL Password: `postgresql!`
 
-Access db using `USE database_name`;
+add `C:\Program Files\PostgreSQL\17\bin` to system variables path.
 
-Open PopSQL and go to 'Manage Connections' -> 'New Connection'-> fill in the necessary information -> 'connect' 
+In the command prompt: `psql -U postgres`
 
-Create table for account storage
-```
-CREATE TABLE accounts ( uuid INT PRIMARY KEY, name VARCHAR(100), balance INT, password VARCHAR(64)
-);
-```
+`CREATE DATABASE new_database_name;`
 
-verify table creation using `SELECT * FROM accounts`'
+List databases `\l`
 
-Download the C++ connector [link](https://dev.mysql.com/downloads/connector/cpp/)
+`\conninfo` to know about current connecion informaiton (database connection, user etc ...)
 
+`\c castle` to swtich to castle database 
+
+`\dt` to list all tables in the database
+
+`\d table_name` if i want to see the columns of the table
+
+connect postgresql to popsql for easier manipulation 
+
+In the vscode intellisense configurations >> include path >> `C:/Program Files/PostgreSQL/17/include` (or wherever libpq-fe.h exists)
 
 
 ## Resources

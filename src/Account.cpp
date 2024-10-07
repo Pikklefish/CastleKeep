@@ -13,12 +13,14 @@ int GenerateUUID()
     return distr(gen); 
 }
 
-Account::Account(string name, double init_balance, string hash)
+Account::Account(Database& db, string name, double init_balance, string hash)
     : account_id(GenerateUUID()),
       account_holder_name(name),
       balance(init_balance),
       password_hash(hash){
     cout << "Account successfully created, ID: " << account_id << endl;
+
+    db.AddAccount(account_id, name, init_balance, password_hash);
 }
 
 bool Account::AuthenticatePassword(const string& password) const{

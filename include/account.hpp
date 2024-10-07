@@ -3,6 +3,8 @@
 
 #include <string>
 
+class Database;
+
 class Account
 {
 
@@ -11,9 +13,10 @@ private:
     std::string account_holder_name;
     double balance;
     std::string password_hash;
+    Database& db;
 
 public:
-    Account(std::string name, double init_balance, std::string hash); // constructor
+    Account(Database& db, std::string name, double init_balance, std::string hash); // constructor
 
     // methods
     double GetBalance() const; // const ensures nothing is changed

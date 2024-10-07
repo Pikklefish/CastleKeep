@@ -1,17 +1,19 @@
 #ifndef DATABASE_HPP
 #define DATABASE_HPP
 
-#include <mysql_driver.h>
-#include <mysql_connection.h>
-#include <cppconn/prepared_statement.h>
-#include <cppconn/statement.h>
-#include <cppconn/resultset.h>
+#include <libpq-fe.h>  // PostgreSQL C API
 #include <string>
+
+#include "account.hpp"
+#include "transaction.hpp"
 
 class Database {
 public:
-    // Constructor to initialize database connection
-    Database();
+    // Constructor to initialize the database connection
+    Database(const std::string& conninfo);
+
+    // Destructor to close the connection
+    ~Database();
 
     // Method to add a new account to the database
     void AddAccount(int accountID, const std::string& name, double balance, const std::string& password);
@@ -19,9 +21,17 @@ public:
     // Method to update the account balance after a transaction
     void UpdateBalance(int accountID, double new_balance);
 
+    Account GetAccount(int accountID);
+
+    void SaveTransaction(int transaction_id, std::string encrypted_transaction_status, std::string encrypted_transaction_sender, std::string encrypted_transaction_receiver,
+                        std::string encrypted_transaction_amount, std::string encrypted_transaction_time);
+
+    std::string GetTransaction(int transaction_id);
+
+    //we make the methods non static so that they will only function when a db instance exists (db connection is established)
 private:
-    sql::mysql::MySQL_Driver *driver;
-    std::unique_ptr<sql::Connection> con;
+    // PostgreSQL connection handle
+    PGconn* conn;
 };
 
 #endif
