@@ -3,8 +3,8 @@
 
 #include <chrono>
 
-#include "account.hpp"
 
+class Account;
 class Database;
 
 class Transaction

@@ -34,6 +34,7 @@ set(Headers
     include/security.hpp
     include/transaction.hpp
     include/auditLog.hpp
+    include/database.hpp
 )
 
 set(Sources
@@ -41,6 +42,7 @@ set(Sources
     src/security.cpp
     src/transaction.cpp
     src/auditLog.cpp
+    src/Database.cpp
 )
 
 # Create a static library

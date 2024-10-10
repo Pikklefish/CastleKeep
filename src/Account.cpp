@@ -13,14 +13,24 @@ int GenerateUUID()
     return distr(gen); 
 }
 
-Account::Account(Database& db, string name, double init_balance, string hash)
-    : account_id(GenerateUUID()),
+// Constructor for creating a new account
+Account::Account(Database& db, std::string name, double init_balance, std::string hash)
+    : db(db),
+      account_id(GenerateUUID()),  // Generate new UUID
       account_holder_name(name),
       balance(init_balance),
-      password_hash(hash){
+      password_hash(Security::HashPassword(hash)){
     cout << "Account successfully created, ID: " << account_id << endl;
+}
 
-    db.AddAccount(account_id, name, init_balance, password_hash);
+// Constructor for retrieving an existing account from the database
+Account::Account(Database& db, int account_id, std::string name, double init_balance, std::string hash)
+    : db(db),
+      account_id(account_id),  // Use the account_id from the database
+      account_holder_name(name),
+      balance(init_balance),
+      password_hash(Security::HashPassword(hash)) {
+    cout << "Account successfully retrieved, ID: " << account_id << endl;
 }
 
 bool Account::AuthenticatePassword(const string& password) const{

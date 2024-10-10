@@ -7,7 +7,7 @@ using namespace std;
 
 #include "transaction.hpp"
 #include "account.hpp"
-#include "database.hpp"
+#include "database.hpp"  //you includ full header def when you call methods ...
 #include "security.hpp"
 
 int GenerateTransactionID()

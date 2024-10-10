@@ -24,7 +24,7 @@ run using: `bin\test_account`
 ## OpenSSL
 1. manually download OpenSSL library on windows [link](https://slproweb.com/products/Win32OpenSSL.html)
 2. download the `msi` version
-3. Check that the path to bin has been set in the system environment variables `PATH` 
+3. Check that the path to bin has been set in the system environment variables `PATH` (the bin folder)
 4. Double check with `openssl version` in the terminal
 
 
