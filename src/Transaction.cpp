@@ -7,7 +7,6 @@ using namespace std;
 
 #include "transaction.hpp"
 #include "account.hpp"
-#include "database.hpp"  //you includ full header def when you call methods ...
 #include "security.hpp"
 
 int GenerateTransactionID()
@@ -18,9 +17,23 @@ int GenerateTransactionID()
     return distr(gen);
 }
 
-// Constructor: Accepts a Database instance
-Transaction::Transaction(Database& db) : db(db) {}
+// Constructor for creating transaction
+Transaction::Transaction() : transaction_id(GenerateTransactionID())
+{
+    cout << "Transaction successfully created, ID: " << transaction_id << endl;
+}
 
+// constructor for retrieving transaction
+Transaction::Transaction(int transaction_id, std::string status, std::string sender_account_id_str, std::string receiver_account_id_str, std::string amount_str, std::string timestamp_str)
+    : transaction_id(transaction_id),
+      status(status),
+      sender_account_id_str(sender_account_id_str),
+      receiver_account_id_str(receiver_account_id_str),
+      amount_str(amount_str),
+      timestamp_str(timestamp_str)
+{
+    cout << "Transaction successfully retrieved, ID: " << transaction_id << endl;
+}
 
 bool Transaction::ValidateTransaction(Account &sender, Account &receiver, double amount)
 {
@@ -34,7 +47,6 @@ bool Transaction::ValidateTransaction(Account &sender, Account &receiver, double
 
 void Transaction::ProcessTransaction(Account &sender, Account &receiver, double amount)
 {
-    int transaction_id = GenerateTransactionID();
     timestamp = std::chrono::system_clock::now();
 
     if (ValidateTransaction(sender, receiver, amount))
@@ -42,20 +54,19 @@ void Transaction::ProcessTransaction(Account &sender, Account &receiver, double 
         sender.Withdraw(amount);
         receiver.Deposit(amount);
         string status = "success";
-        
-        LogTransaction(transaction_id, status, sender.GetAccountID(), receiver.GetAccountID(), amount, timestamp);
+
+        EncryptTransaction(transaction_id, status, sender.GetAccountID(), receiver.GetAccountID(), amount, timestamp);
         std::cout << "Transaction Complete of amount: " << amount << std::endl;
     }
     else
     {
         string status = "fail";
-        LogTransaction(transaction_id, status, sender.GetAccountID(), receiver.GetAccountID(), amount, timestamp);
+        EncryptTransaction(transaction_id, status, sender.GetAccountID(), receiver.GetAccountID(), amount, timestamp);
         std::cerr << "Transaction processing failed." << std::endl;
     }
 }
 
-
-void Transaction::LogTransaction(int transaction_id, string status, int sender_account_id, int receiver_account_id, double amount, const std::chrono::system_clock::time_point &timestamp)
+void Transaction::EncryptTransaction(int transaction_id, string status, int sender_account_id, int receiver_account_id, double amount, const std::chrono::system_clock::time_point &timestamp)
 {
     // Convert time_point to a readable string
     std::time_t log_time = std::chrono::system_clock::to_time_t(timestamp);
@@ -75,8 +86,26 @@ void Transaction::LogTransaction(int transaction_id, string status, int sender_a
     std::string encrypted_transaction_receiver = Security::Encrypt(transaction_receiver);
     std::string encrypted_transaction_amount = Security::Encrypt(transaction_amount);
     std::string encrypted_transaction_time = Security::Encrypt(transaction_time);
-    
-    // Log the encrypted transaction details
-    db.SaveTransaction(transaction_id,encrypted_transaction_status, encrypted_transaction_sender, encrypted_transaction_receiver, encrypted_transaction_amount, encrypted_transaction_time);
-    std::cout << "Transaction logged successfully (encrypted)!" << std::endl;
+
+    std::cout << "Transaction encrypted successfully (encrypted)!" << std::endl;
+}
+
+int Transaction::GetTransactionID() const
+{
+    return transaction_id;
+}
+
+std::string Transaction::GetAmountSTR() const
+{
+    return amount_str;
+}
+
+std::string Transaction::GetSenderIdSTR() const
+{
+    return sender_account_id_str;
+}
+
+std::string Transaction::GetReceiverIdSTR() const
+{
+    return receiver_account_id_str;
 }

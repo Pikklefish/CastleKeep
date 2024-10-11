@@ -6,6 +6,7 @@
 
 #include "database.hpp"
 #include "account.hpp"
+#include "transaction.hpp"
 
 
 // <<Constructor: Initializes the PostgreSQL connection>>
@@ -61,12 +62,9 @@ void Database::AddAccount(int account_id, const std::string& name, double balanc
     PQclear(res);
 }
 
-
-
 // <<Delete an Account>> 
 void Database::DeleteAccount(int account_id){
     const char* query = "DELETE FROM accounts WHERE uuid = $1";
-
     const char* paramValues[1];
     char accountIDStr[12];
     snprintf(accountIDStr, sizeof(accountIDStr), "%d", account_id);
@@ -78,13 +76,12 @@ void Database::DeleteAccount(int account_id){
     } else {
         std::cout << "Account deleted successfully! ID: " << account_id << std::endl;
     }
-
     PQclear(res);
 }
 
 // <<Retrieve an Account>>
 Account Database::GetAccount(int account_id) {
-    const char* query = "SELECT name, balance::double precision, password FROM accounts WHERE uuid = $1";
+    const char* query = "SELECT name, balance, password FROM accounts WHERE uuid = $1";
 
     char accountIDStr[12];
     snprintf(accountIDStr, sizeof(accountIDStr), "%d", account_id);
@@ -114,7 +111,7 @@ Account Database::GetAccount(int account_id) {
 
     PQclear(res);
 
-    return Account(*this, account_id, name, balance, passwordHash);
+    return Account( account_id, name, balance, passwordHash);
 }
 
 
@@ -197,9 +194,8 @@ void Database::DeleteTransaction(int transaction_id){
     PQclear(res);
 }
 
-
 // <<Retrieve a transaction by its ID (for example)>>
-std::string Database::GetTransaction(int transaction_id) {
+Transaction Database::GetTransaction(int transaction_id) {
     const char* query = "SELECT * FROM logs WHERE transaction_id = $1";
 
     const char* paramValues[1];
@@ -212,14 +208,17 @@ std::string Database::GetTransaction(int transaction_id) {
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
         std::cerr << "Select from logs failed: " << PQerrorMessage(conn) << std::endl;
         PQclear(res);
-        return "";
+        throw std::runtime_error("Failed to retrieve transaction.");
     }
 
-    std::stringstream resultStream;
-    for (int i = 0; i < PQnfields(res); i++) {
-        resultStream << PQfname(res, i) << ": " << PQgetvalue(res, 0, i) << std::endl;
-    }
+    std::string status = PQgetvalue(res, 0, 1);
+    std::string sender_account_id_str = PQgetvalue(res, 0, 2);  // Convert sender from string to int
+    std::string receiver_account_id_str = PQgetvalue(res, 0, 3);  // Convert receiver from string to int
+    std::string amount_str = PQgetvalue(res, 0, 4);
+    std::string timestamp_str = PQgetvalue(res, 0, 5);
 
     PQclear(res);
-    return resultStream.str();
+
+    // Return a Transaction object with the retrieved data
+    return Transaction(transaction_id, status, sender_account_id_str, receiver_account_id_str, amount_str, timestamp_str);
 }

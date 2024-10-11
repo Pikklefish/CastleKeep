@@ -33,7 +33,6 @@ set(Headers
     include/account.hpp
     include/security.hpp
     include/transaction.hpp
-    include/auditLog.hpp
     include/database.hpp
 )
 
@@ -41,7 +40,6 @@ set(Sources
     src/account.cpp
     src/security.cpp
     src/transaction.cpp
-    src/auditLog.cpp
     src/Database.cpp
 )
 

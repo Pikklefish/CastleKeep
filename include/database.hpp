@@ -35,7 +35,7 @@ public:
     void DeleteTransaction(int transaction_id);
 
     // Method to get transaction
-    std::string GetTransaction(int transaction_id);
+    Transaction GetTransaction(int transaction_id);
 
     //we make the methods non static so that they will only function when a db instance exists (db connection is established)
 private:
