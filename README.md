@@ -1,8 +1,8 @@
-# Castle: secure banking transaction
+# CastleKeep: secure banking transaction
 created by Seung Whan Song
 
 ## Introduction
-The purpose of this project is to demonstrate my skills on C++ (OOP), Secuirty (OpenSSL/Hashing), SOLID, and Testing (Google Test) by creating a simple backend for what could be a bank (Castle Bank). With this project you can add accounts, and transact money between accounts (deposite, withdraw). The project also aims to upload basic security like an actual bank through password hashing and encrypting transaction data with OpenSSL.
+The purpose of this project is to demonstrate my skills on C++ (OOP), Secuirty (OpenSSL/Hashing), SOLID, interacting with DB and Testing (Google Test) by creating a simple backend for what could be a bank (CastleKeep Bank). With this project you can add accounts, and transact money between accounts (deposite, withdraw). The project also aims to upload basic security like an actual bank through password hashing and encrypting transaction data with OpenSSL.
 
 
 Here is a basic flowchart of what the different classes do
